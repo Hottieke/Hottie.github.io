@@ -78,9 +78,32 @@ footer{padding:36px 20px 60px;text-align:center;border-top:1px solid #222;font-s
 <section id="about"><div class="tag">About</div><h2 class="serif">Curated for you</h2><p style="max-width:560px">HOTTIE is a curated fashion boutique bringing selected styles to customers in Kenya. Each Wednesday we open a new collection, available as a preorder with a 30% deposit and the balance paid on delivery.</p></section>
 <section id="contact"><div class="tag">Contact</div><h2 class="serif">Hottie hotline</h2><p id="cbody"></p></section>
 <button class="btn" id="adm" style="display:none;position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:30" onclick="admin()">Admin</button>
-<footer><div class="logo script" style="font-size:40px">Hottie</div><p><button class="ghost" style="margin:0 8px" onclick="infoO('ship')">Shipping &amp; returns</button><button class="ghost" style="margin:0 8px" onclick="infoO('size')">Size guide</button></p><p class="note">Preview as: <button class="ghost" style="margin:0 6px" onclick="ovr=null;draw()">Auto</button><button class="ghost" style="margin:0 6px" onclick="ovr='live';draw()">Drop live</button><button class="ghost" style="margin:0 6px" onclick="ovr='up';draw()">Before drop</button></p></footer>
+<footer><div class="logo script" style="font-size:40px">Hottie</div><p><button class="ghost" style="margin:0 8px" onclick="infoO('ship')">Shipping &amp; returns</button><button class="ghost" style="margin:0 8px" onclick="infoO('size')">Size guide</button><button class="ghost" style="margin:0 8px" onclick="ownerO()">Owner login</button></p></footer>
 <div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
+// ================= PASTE YOUR SUPABASE DETAILS HERE (Supabase > Project Settings > API) =================
+const SUPABASE_URL='PASTE_PROJECT_URL';          // e.g. https://abcdxyz.supabase.co
+const SUPABASE_ANON_KEY='PASTE_PUBLISHABLE_KEY'; // the PUBLISHABLE (anon) key. NEVER paste the secret / service_role key.
+// =========================================================================================================
+const READY=!SUPABASE_URL.includes('PASTE');
+const SB=READY?supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
+let SESS=null,ISADM=false;const RELOAD=[];const reloadAll=()=>Promise.all(RELOAD.map(f=>f()));
+// Small adapter so the shop and Admin keep working exactly as before, now saving to Supabase.
+const claude={async use(k){
+ if(k=='assets')return ISADM?{upload:async f=>{const n=Date.now()+'-'+f.name.replace(/[^\w.-]/g,'_');const{error}=await SB.storage.from('photos').upload(n,f);if(error)throw error;return{url:SB.storage.from('photos').getPublicUrl(n).data.publicUrl}}}:null;
+ if(k=='db')return{
+  collection:c=>({onSnapshot:cb=>{const load=async()=>{const{data}=await SB.from(c).select('*').order('created_at');cb({docs:(data||[]).map(r=>({id:r.id,data:()=>r}))})};RELOAD.push(load);load();setInterval(load,30000)},
+   add:async d=>{const{error}=await SB.from(c).insert(d);if(error)throw error;await reloadAll()}}),
+  doc:p=>{const[c,id]=p.split('/');return c=='settings'?
+   {onSnapshot:cb=>{const load=async()=>{const{data}=await SB.from('settings').select('data').eq('id',1).maybeSingle();cb({exists:!!data,data:()=>data.data})};RELOAD.push(load);load();setInterval(load,30000)},
+    set:async o=>{const{error}=await SB.from('settings').upsert({id:1,data:o});if(error)throw error;await reloadAll()}}:
+   {update:async d=>{const{error}=await SB.from(c).update(d).eq('id',id);if(error)throw error;await reloadAll()},
+    delete:async()=>{const{error}=await SB.from(c).delete().eq('id',id);if(error)throw error;await reloadAll()}}}}}};
+async function loadOrd(){const{data}=await SB.from('orders').select('*').order('created_at',{ascending:false});
+ ORD=(data||[]).map(r=>({uid:r.id,no:r.no,v:r.v,items:r.items,t:r.t,dep:r.dep,paid:r.paid,status:r.status,eta:r.eta?new Date(r.eta).getTime():null,at:new Date(r.created_at).getTime(),del:r.del}))}
+function ownerO(){$('sheet').innerHTML=(SESS?`<h2 class="serif">Owner</h2><button class="btn" style="width:100%" onclick="SB.auth.signOut().then(()=>location.reload())">Log out</button>`:`<h2 class="serif">Owner login</h2><label>Email</label><input id="o_e" type="email" autocomplete="email"><label>Password</label><input id="o_p" type="password" autocomplete="current-password"><div class="err" id="o_err"></div><button class="btn" style="width:100%;margin-top:10px" onclick="ownerIn()">Log in</button>`)+`<button class="btn line" style="width:100%;margin-top:8px" onclick="closeO()">Close</button>`;$('ov').classList.add('on')}
+async function ownerIn(){if(!READY){$('o_err').textContent='Supabase details are not set yet.';return}const{error}=await SB.auth.signInWithPassword({email:$('o_e').value.trim(),password:$('o_p').value});if(error){$('o_err').textContent='Wrong email or password.';return}location.reload()}
 // ---- Settings & sample catalogue: replaced by a database + admin dashboard in the next stage ----
 const CFG={dropDay:3,openHour:9,closeHour:24,depositPct:30,leadDays:10,collection:{name:'Collection 01 — Tops',desc:'Our first curated drop: five tops, limited sizes.'}};
 const bg=p=>p.img?`url('${p.img}') center/cover`:(p.hue||'#DBAEBB');
@@ -140,11 +163,11 @@ if(!/^(?:\+?254|0)[17]\d{8}$/.test(v.phone.replace(/\s/g,'')))er('phone','Enter 
 if(!/^\S+@\S+\.\S+$/.test(v.email))er('email','Enter a valid email address');
 if(v.addr.length<4)er('addr','Please enter your delivery address');if(!v.town)er('town','Please enter your town or area');
 if(dlOpts().length&&$('f_dl').value==='')er('dl','Please choose a delivery option');
-if(!ok)return;const t=tot(),dep=Math.ceil(t*CFG.depositPct/100),no='HOT-'+Date.now().toString(36).toUpperCase().slice(-6);
+if(!ok)return;let t=tot(),dep=Math.ceil(t*CFG.depositPct/100),no='';
 const items=bag.map(b=>{const p=P.find(x=>x.id==b.id);return{id:b.id,name:p.name,price:p.price,s:b.s,c:b.c,q:b.q}});
 const dl=dlOpts().length?dlOpts()[+$('f_dl').value]:null;const o={no,v,items,t,dep,del:dl,paid:0,status:'Awaiting deposit',eta:Date.now()+864e6,at:Date.now()};
-if(!DB||!ME){alert('Orders can only be saved when you are signed in to view this page.');return}
-try{const r=DB.doc('orders/'+ME),sn=await r.get(),l=(sn.exists&&sn.data().list)||[];l.push(o);await r.set({list:l})}catch(e){alert('Sorry, we could not save your order. Please try again.');return}
+if(!READY){alert('This shop is not ready to take orders yet.');return}
+try{const{data,error}=await SB.rpc('place_order',{p_v:v,p_items:bag.map(b=>({id:b.id,s:b.s,c:b.c,q:b.q})),p_del:dl});if(error)throw error;no=data.no;t=data.t;dep=data.dep;o.no=no;o.t=t;o.dep=dep}catch(e){alert((e&&e.message)||'Sorry, we could not save your order. Please try again.');return}
 if(SET.payUrl){payScr(o);return}
 thanksFx();
 $('sheet').innerHTML=`<div class="logo script" style="font-size:44px;text-align:center">Hottie</div><h2 class="serif" style="text-align:center">Preorder received</h2><p style="text-align:center">Order number <b>${no}</b></p>
@@ -152,10 +175,10 @@ $('sheet').innerHTML=`<div class="logo script" style="font-size:44px;text-align:
 <p class="note">Your order is not confirmed until the ${CFG.depositPct}% deposit is received. HOTTIE will contact you on ${v.phone} to complete the M-Pesa payment.</p><button class="btn" style="width:100%" onclick="bag=[];save();draw();closeO()">Done</button>`}
 // ---- Order tracking ----
 const STEPS=['Deposit received','Preorder confirmed','Being prepared','In transit','Arrived','Delivered'];
-function trackO(msg){$('sheet').innerHTML=`<h2 class="serif">Track your preorder</h2><label>Order number</label><input id="t_no" placeholder="HOT-XXXXXX"><label>Phone number used at checkout</label><input id="t_ph" type="tel"><div class="err">${msg||''}</div><button class="btn" style="width:100%;margin-top:10px" onclick="look()">Track</button><button class="btn line" style="width:100%;margin-top:8px" onclick="closeO()">Close</button><p class="note">Orders are looked up on the account you ordered from.</p>`;$('ov').classList.add('on')}
+function trackO(msg){$('sheet').innerHTML=`<h2 class="serif">Track your preorder</h2><label>Order number</label><input id="t_no" placeholder="HOT-XXXXXX"><label>Phone number used at checkout</label><input id="t_ph" type="tel"><div class="err">${msg||''}</div><button class="btn" style="width:100%;margin-top:10px" onclick="look()">Track</button><button class="btn line" style="width:100%;margin-top:8px" onclick="closeO()">Close</button>`;$('ov').classList.add('on')}
 async function look(){const no=$('t_no').value.trim().toUpperCase(),ph=$('t_ph').value.replace(/\D/g,'').slice(-9);
-if(!DB||!ME)return trackO('Please sign in to look up your order.');
-let o;try{const sn=await DB.doc('orders/'+ME).get();o=((sn.exists&&sn.data().list)||[]).find(x=>x.no==no&&x.v.phone.replace(/\D/g,'').slice(-9)==ph)}catch(e){return trackO('Could not reach the store. Try again.')}
+if(!READY)return trackO('The shop is not ready yet.');
+let o;try{const{data,error}=await SB.rpc('track_order',{p_no:no,p_phone:ph});if(error)throw error;o=data?{...data,eta:data.eta?new Date(data.eta).getTime():null,at:new Date(data.created_at).getTime()}:null}catch(e){return trackO('Could not reach the store. Try again.')}
 if(!o)return trackO('We could not find an order with those details.');
 const idx=STEPS.indexOf(o.status),bal=o.t-(o.paid||0),eta=new Date(o.eta||o.at+864e6).toLocaleDateString('en-KE',{timeZone:'Africa/Nairobi',weekday:'short',day:'numeric',month:'short'});
 $('sheet').innerHTML=`<h2 class="serif">${o.no}</h2>${o.status=='Arrived'?`<div class="warn"><b>Your package has arrived.</b> Balance of ${kes(bal)} is payable on delivery.</div>`:''}${o.status=='Cancelled'?'<div class="warn">This order was cancelled.</div>':''}
@@ -240,9 +263,10 @@ try{const fl=$('im_'+id).files[0];if(fl){const A=await claude.use('assets');if(!
 if(!d.name||!(d.price>0)||!Object.keys(d.s).length||!d.c.length){alert('Please fill in name, price, colours and sizes.');return}
 if(id=='new'){d.hue='#DBAEBB';await DB.collection('products').add(d)}else await DB.doc('products/'+id).update(d);admin('products')}
 async function delP(id){if(confirm('Delete this product?')){await DB.doc('products/'+id).delete();admin('products')}}
-async function setO(uid,no,patch){const r=DB.doc('orders/'+uid),l=(await r.get()).data().list;const o=l.find(x=>x.no==no);
-if(patch.status=='Deposit received'&&!o.depositAt){for(const it of o.items){const p=P.find(x=>x.id==it.id);if(p){const ns={...p.s};ns[it.s]=Math.max(0,(ns[it.s]||0)-it.q);await DB.doc('products/'+p.id).update({s:ns})}}patch.paid=o.dep;patch.depositAt=Date.now()}
-Object.assign(o,patch);await r.set({list:l});const i=ORD.findIndex(x=>x.no==no);if(i>-1)Object.assign(ORD[i],patch);admin('orders')}
+async function setO(uid,no,patch){try{if(patch.status=='Deposit received'){const{error}=await SB.rpc('confirm_deposit',{p_no:no});if(error)throw error;delete patch.status;delete patch.paid}
+const u={};if(patch.status)u.status=patch.status;if('paid' in patch)u.paid=patch.paid;if(patch.eta)u.eta=new Date(patch.eta).toISOString();
+if(Object.keys(u).length){const{error}=await SB.from('orders').update(u).eq('no',no);if(error)throw error}}catch(e){alert('Could not update the order: '+(e.message||e));return}
+await reloadAll();admin('orders')}
 function admin(tab){tab=tab||'store';if(!DB)return;
 let h=`<h2 class="serif">Admin</h2><div class="chips">${['store','delivery','pages','products','orders'].map(t=>`<button class="chip ${t==tab?'sel':''}" onclick="admin('${t}')">${t}</button>`).join('')}</div>`;
 if(tab=='store')h+=`<label>Store mode</label><div class="chips">${[['auto','Follow schedule'],['open','Force open'],['closed','Force closed']].map(([k,l])=>`<button class="chip ${SET.mode==k?'sel':''}" onclick="setS({mode:'${k}'})">${l}</button>`).join('')}</div><label>Collection name</label><input id="s_name" value="${esc(SET.name||'')}"><label>Description</label><input id="s_desc" value="${esc(SET.desc||'')}"><label>Outfit builder model photo</label><input id="s_model" type="file" accept="image/*"><button class="chip" style="margin-top:8px" onclick="upModel()">Upload model</button><label>M-Pesa payment server address (leave empty until connected)</label><input id="s_pay" placeholder="https://api.yourdomain.co.ke" value="${esc(SET.payUrl||'')}"><button class="chip" style="margin-top:8px" onclick="setS({payUrl:$('s_pay').value.trim().replace(/\/$/,'')})">Save payment address</button><label>Shopping bag image (used in the add-to-bag animation)</label><input id="s_bag" type="file" accept="image/*"><button class="chip" style="margin-top:8px" onclick="upBag()">Upload bag image</button><label>Drop opens at hour (Nairobi, 0–23)</label><input id="s_open" type="number" value="${OH()}"><button class="btn" style="margin-top:12px" onclick="setS({name:$('s_name').value,desc:$('s_desc').value,openHour:+$('s_open').value})">Save</button>`;
@@ -253,9 +277,11 @@ if(tab=='orders'){const open=ORD.filter(o=>o.status!='Delivered'&&o.status!='Can
 h+=`<div class="sum"><div><span>Orders</span><span>${ORD.length}</span></div><div><span>Deposits received</span><span>${kes(ORD.reduce((a,o)=>a+(o.paid||0),0))}</span></div><div class="hl"><span>Outstanding balances</span><span>${kes(out)}</span></div></div>`;
 h+=ORD.sort((a,b)=>b.at-a.at).map(o=>`<div class="sum"><div><b>${o.no}</b><span>${o.status}</span></div><div class="note"><span>${esc(o.v.name)} · ${esc(o.v.phone)}</span></div><div class="note"><span>${esc(o.v.addr)}, ${esc(o.v.town)}</span></div>${o.del?`<div class="note"><span>${esc(o.del.name)} · fee ${kes(o.del.fee)} on delivery</span></div>`:''}${o.items.map(i=>`<div class="note"><span>${esc(i.name)} · ${i.s} · ${esc(i.c)}</span><span>×${i.q}</span></div>`).join('')}<div><span>Total</span><span>${kes(o.t)}</span></div><div><span>Deposit paid</span><span>${kes(o.paid||0)}</span></div><div class="hl"><span>Balance</span><span>${kes(o.t-(o.paid||0))}</span></div><div><span>Est. delivery</span><input type="date" style="width:auto;margin:0" value="${new Date((o.eta||o.at+864e6)+10800000).toISOString().slice(0,10)}" onchange="setO('${o.uid}','${o.no}',{eta:new Date(this.value+'T12:00:00+03:00').getTime()})"></div><div class="chips" style="margin-top:10px"><button class="chip" onclick="setO('${o.uid}','${o.no}',{paid:${o.t}})">Record balance paid</button></div><div class="chips" style="margin-top:10px">${STAT.map(x=>`<button class="chip ${o.status==x?'sel':''}" onclick="setO('${o.uid}','${o.no}',{status:'${x}'})">${x}</button>`).join('')}</div></div>`).join('')||'<p class="note">No orders yet.</p>'}
 h+='<button class="btn line" style="width:100%;margin-top:12px" onclick="closeO()">Close</button>';$('sheet').innerHTML=h;$('ov').classList.add('on')}
-(async()=>{try{const u=await claude.use('user');isAdmin=!!(u&&u.canEdit());ME=u&&u.id?await u.id():null;DB=await claude.use('db');if(!DB)return;
+(async()=>{try{if(!READY){document.body.insertAdjacentHTML('afterbegin','<div class="warn" style="margin:0">Owner: add your Supabase details at the top of the file.</div>');return}
+const{data:{session}}=await SB.auth.getSession();SESS=session;if(session){const{data}=await SB.rpc('is_admin');ISADM=!!data}
+DB=await claude.use('db');isAdmin=ISADM;
 DB.collection('products').onSnapshot(x=>{P=x.docs.map(d=>({...d.data(),id:d.id}));draw()});
 DB.doc('settings/store').onSnapshot(x=>{SET=x.exists?x.data():{mode:'auto'};draw()});
-if(isAdmin){$('adm').style.display='block';DB.collection('orders').onSnapshot(x=>{ORD=x.docs.flatMap(d=>(d.data().list||[]).map(o=>({...o,uid:d.id})))})}}catch(e){}})();
+if(isAdmin){$('adm').style.display='block';RELOAD.push(loadOrd);loadOrd();setInterval(loadOrd,30000)}}catch(e){console.error(e)}})();
 draw();
 </script></body></html>
