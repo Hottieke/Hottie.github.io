@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HOTTIE — Your next favourite outfit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@1,500&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{--night:#09090B;--petal:#DBAEBB;--fern:#8F9951;--linen:#D6D6D1;--card:#141417;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:70px;scroll-behavior:smooth}
+body{margin:0;background:var(--night);color:var(--linen);font:400 15px/1.5 Inter,system-ui,sans-serif}
+.script{font-family:'Pinyon Script','Snell Roundhand',cursive;font-weight:400}
+.serif{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500}
+header{position:sticky;top:0;z-index:20;background:rgba(9,9,11,.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid #222}
+.logo{font-size:34px;color:var(--petal);text-decoration:none;line-height:1}
+nav a,.ghost{color:var(--linen);text-decoration:none;margin-left:18px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;background:none;border:0;cursor:pointer;font-family:inherit}
+@media(max-width:600px){nav a{display:none}nav .ghost{margin-left:0}}
+.btn{display:inline-block;background:var(--petal);color:var(--night);border:0;border-radius:999px;padding:14px 28px;font:600 14px Inter,sans-serif;cursor:pointer;text-decoration:none;transition:.2s}
+.btn:hover{filter:brightness(1.08)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.line{background:none;color:var(--linen);border:1px solid #444}
+.hero{min-height:78vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:48px 24px;background:radial-gradient(ellipse at 50% 0,#2a1d22 0,var(--night) 70%)}
+.hero h1{font-size:clamp(76px,22vw,170px);margin:0;color:var(--petal);line-height:1}
+.hero p{font-size:clamp(22px,5vw,30px);margin:6px 0 28px}
+.hero .row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+section{padding:56px 20px;max-width:1100px;margin:auto}
+h2{font-size:34px;margin:0 0 6px;font-weight:500}
+.tag{color:var(--fern);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.drop{background:var(--card);border-radius:20px;padding:28px;text-align:center;border:1px solid #232327}
+.cd{display:flex;gap:10px;justify-content:center;margin:18px 0}
+.cd div{background:var(--night);border-radius:14px;padding:12px 0;min-width:64px}
+.cd b{display:block;font:500 28px 'Cormorant Garamond',serif;color:var(--petal)}.cd span{font-size:11px;text-transform:uppercase;letter-spacing:.1em}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:22px}
+@media(min-width:800px){.grid{grid-template-columns:repeat(4,1fr)}}
+.pc{background:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid #232327;transition:.2s}
+.pc:hover{transform:translateY(-3px);border-color:var(--petal)}
+.ph{aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:64px;color:rgba(9,9,11,.55)}
+.pc .i{padding:12px}.pc .n{font-weight:500}.pc .p{color:var(--petal);font-size:14px}
+.so{color:var(--fern);font-size:12px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:40;display:none;align-items:flex-end;justify-content:center}
+.ov.on{display:flex}
+.sheet{background:var(--night);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:24px;border:1px solid #2a2a2e}
+@media(min-width:700px){.ov{align-items:center}.sheet{border-radius:22px}}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}
+.chip{border:1px solid #444;background:none;color:var(--linen);border-radius:999px;padding:8px 16px;cursor:pointer;font:500 13px Inter}
+.chip.sel{background:var(--petal);color:var(--night);border-color:var(--petal)}
+.chip:disabled{text-decoration:line-through;opacity:.35;cursor:not-allowed}
+.line-i{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #222}
+.line-i .th{width:52px;height:68px;border-radius:10px;flex:none}
+.q button{background:#222;color:var(--linen);border:0;width:28px;height:28px;border-radius:50%;cursor:pointer}
+.sum{background:var(--card);border-radius:14px;padding:16px;margin:16px 0}
+.sum div{display:flex;justify-content:space-between;padding:4px 0}.sum .hl{color:var(--petal);font-weight:600;font-size:17px}
+input,textarea,select{width:100%;background:var(--card);border:1px solid #333;border-radius:12px;color:var(--linen);padding:12px;font:15px Inter;margin:4px 0 2px}
+input:focus,textarea:focus{outline:2px solid var(--petal);border-color:transparent}
+label{font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-top:10px}
+.err{color:#e59aa8;font-size:12px;min-height:14px}
+.note{font-size:12px;opacity:.7}
+.warn{background:#1c1d12;border:1px solid var(--fern);border-radius:12px;padding:12px;font-size:13px;margin:12px 0}
+footer{padding:36px 20px 60px;text-align:center;border-top:1px solid #222;font-size:13px}
+.bdg{position:absolute;margin:-8px 0 0 -4px;background:var(--petal);color:var(--night);border-radius:50%;font-size:10px;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+#fx,#tx{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(9,9,11,.9);text-align:center;padding:24px}
+.bagfx{position:relative;width:190px;height:230px;margin-top:22vh}
+.bagfx>svg,.bagfx>img{position:absolute;inset:0;width:100%;height:100%;z-index:2;object-fit:contain;animation:bagb .5s ease both}
+.dropi{position:absolute;left:50%;top:0;width:90px;height:120px;margin-left:-45px;border-radius:12px;z-index:1;opacity:0;animation:dropk .8s cubic-bezier(.5,0,.9,.6) both}
+@keyframes dropk{0%{transform:translateY(-75vh) rotate(-10deg);opacity:0}15%{opacity:1}100%{transform:translateY(70px) rotate(4deg) scale(.7);opacity:1}}
+@keyframes bagb{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.tk{font-size:clamp(64px,19vw,120px);color:var(--petal);line-height:1.05;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
+.tks{max-width:300px;margin-top:6px;animation:pop .7s .3s both}
+.kiss{width:240px;max-width:80vw;margin-top:22px;animation:rise 1.3s 1.4s cubic-bezier(.2,.8,.2,1) both}
+.mw{font-size:28px;color:var(--petal);margin-top:6px;animation:pop .5s 2.5s both}
+@keyframes pop{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes rise{0%{transform:translateY(80vh) scale(.6) rotate(-14deg);opacity:0}70%{transform:translateY(0) scale(1.3) rotate(-8deg);opacity:1}100%{transform:translateY(0) scale(1.1) rotate(-8deg);opacity:1}}
+@keyframes fo{to{opacity:0}}
+.bagfx.pic{width:250px;height:264px}
+.bagw{position:absolute;inset:0;z-index:2;animation:bagb .5s ease both}
+.bagw img{position:absolute;left:0;width:100%;height:auto;display:block}
+.bagw .bb{bottom:0}
+.bagw .bh{top:0;transform-origin:50% 100%}
+@keyframes hopen{from{transform:scaleX(1) scaleY(1)}to{transform:scaleX(1.14) scaleY(.96)}}
+@keyframes hclose{from{transform:scaleX(1.14) scaleY(.96)}to{transform:scaleX(1) scaleY(1)}}
+.bagfx.pic .dropi{z-index:3;animation-name:dropk2}
+@keyframes dropk2{0%{transform:translateY(-75vh) rotate(-10deg);opacity:0}15%{opacity:1}100%{transform:translateY(70px) rotate(4deg) scale(.35);opacity:0}}
+</style></head><body>
+<header><a class="logo script" href="#top">Hottie</a>
+<nav><a href="#drop">Drop</a><a href="#look">Create Your Look</a><a href="#about">About</a><a href="#contact">Hottie hotline</a><button class="ghost" onclick="trackO()">Track</button><button class="ghost" id="bagBtn">Bag<span class="bdg" id="cnt">0</span></button></nav></header>
+<div id="top" class="hero"><div class="tag">Wednesday drops · Kenya</div><h1 class="script">Hottie</h1><p class="serif">Your next favourite outfit.</p>
+<div class="row"><a class="btn" href="#drop">Shop the Drop</a><a class="btn line" href="#about">Discover HOTTIE</a></div></div>
+<section id="drop"><div class="tag" id="dtag"></div><h2 class="serif" id="dname"></h2><p id="ddesc" style="margin:0"></p><div class="drop" id="dbox" style="margin-top:20px"></div><div class="grid" id="grid"></div></section>
+<section id="look" style="text-align:center"><div class="tag">New</div><h2 class="serif">Create Your Look</h2><p style="max-width:460px;margin:8px auto 18px">Mix pieces from the current drop and preview them together on a model.</p><button class="btn" onclick="lookO()">Build an outfit</button></section>
+<section id="about"><div class="tag">About</div><h2 class="serif">Curated for you</h2><p style="max-width:560px">HOTTIE is a curated fashion boutique bringing selected styles to customers in Kenya. Each Wednesday we open a new collection, available as a preorder with a 30% deposit and the balance paid on delivery.</p></section>
+<section id="contact"><div class="tag">Contact</div><h2 class="serif">Hottie hotline</h2><p id="cbody"></p></section>
+<button class="btn" id="adm" style="display:none;position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:30" onclick="admin()">Admin</button>
+<footer><div class="logo script" style="font-size:40px">Hottie</div><p><button class="ghost" style="margin:0 8px" onclick="infoO('ship')">Shipping &amp; returns</button><button class="ghost" style="margin:0 8px" onclick="infoO('size')">Size guide</button><button class="ghost" style="margin:0 8px" onclick="ownerO()">Owner login</button></p></footer>
+<div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+// Your Supabase details now live in config.js (next to this file).
+const SUPABASE_URL=(window.HOTTIE||{}).url||'PASTE';
+const SUPABASE_ANON_KEY=(window.HOTTIE||{}).key||'PASTE';
+const READY=!SUPABASE_URL.includes('PASTE')&&!SUPABASE_ANON_KEY.includes('PASTE');
+const SB=READY?supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
+let SESS=null,ISADM=false;const RELOAD=[];const reloadAll=()=>Promise.all(RELOAD.map(f=>f()));
+// Small adapter so the shop and Admin keep working exactly as before, now saving to Supabase.
+const claude={async use(k){
+ if(k=='assets')return ISADM?{upload:async f=>{const n=Date.now()+'-'+f.name.replace(/[^\w.-]/g,'_');const{error}=await SB.storage.from('photos').upload(n,f);if(error)throw error;return{url:SB.storage.from('photos').getPublicUrl(n).data.publicUrl}}}:null;
+ if(k=='db')return{
+  collection:c=>({onSnapshot:cb=>{const load=async()=>{const{data}=await SB.from(c).select('*').order('created_at');cb({docs:(data||[]).map(r=>({id:r.id,data:()=>r}))})};RELOAD.push(load);load();setInterval(load,30000)},
+   add:async d=>{const{error}=await SB.from(c).insert(d);if(error)throw error;await reloadAll()}}),
+  doc:p=>{const[c,id]=p.split('/');return c=='settings'?
+   {onSnapshot:cb=>{const load=async()=>{const{data}=await SB.from('settings').select('data').eq('id',1).maybeSingle();cb({exists:!!data,data:()=>data.data})};RELOAD.push(load);load();setInterval(load,30000)},
+    set:async o=>{const{error}=await SB.from('settings').upsert({id:1,data:o});if(error)throw error;await reloadAll()}}:
+   {update:async d=>{const{error}=await SB.from(c).update(d).eq('id',id);if(error)throw error;await reloadAll()},
+    delete:async()=>{const{error}=await SB.from(c).delete().eq('id',id);if(error)throw error;await reloadAll()}}}}}};
+async function loadOrd(){const{data}=await SB.from('orders').select('*').order('created_at',{ascending:false});
+ ORD=(data||[]).map(r=>({uid:r.id,no:r.no,v:r.v,items:r.items,t:r.t,dep:r.dep,paid:r.paid,status:r.status,eta:r.eta?new Date(r.eta).getTime():null,at:new Date(r.created_at).getTime(),del:r.del,code:r.pay_code}))}
+function ownerO(){$('sheet').innerHTML=(SESS?`<h2 class="serif">Owner</h2><button class="btn" style="width:100%" onclick="SB.auth.signOut().then(()=>location.reload())">Log out</button>`:`<h2 class="serif">Owner login</h2><label>Email</label><input id="o_e" type="email" autocomplete="email"><label>Password</label><input id="o_p" type="password" autocomplete="current-password"><div class="err" id="o_err"></div><button class="btn" style="width:100%;margin-top:10px" onclick="ownerIn()">Log in</button>`)+`<button class="btn line" style="width:100%;margin-top:8px" onclick="closeO()">Close</button>`;$('ov').classList.add('on')}
+async function ownerIn(){if(!READY){$('o_err').textContent='Supabase details are not set yet.';return}const{error}=await SB.auth.signInWithPassword({email:$('o_e').value.trim(),password:$('o_p').value});if(error){$('o_err').textContent='Wrong email or password.';return}location.reload()}
+// ---- Settings & sample catalogue: replaced by a database + admin dashboard in the next stage ----
+const CFG={dropDay:3,openHour:9,closeHour:24,depositPct:30,leadDays:10,collection:{name:'Collection 01 — Tops',desc:'Our first curated drop: five tops, limited sizes.'}};
+const bg=p=>p.img?`url('${p.img}') center/cover`:(p.hue||'#DBAEBB');
+const OH=()=>SET.openHour??CFG.openHour;
+let P=[],SET={mode:'auto'},DB=null,ME=null,isAdmin=false,ORD=[];let ovr=null,bag=[];try{bag=JSON.parse(localStorage.getItem('hottie_bag')||'[]')}catch(e){}
+const $=id=>document.getElementById(id),kes=n=>'KSh '+n.toLocaleString('en-KE'),save=()=>{try{localStorage.setItem('hottie_bag',JSON.stringify(bag))}catch(e){}};
+const stock=(p,s)=>p.s[s]||0,sold=p=>Object.values(p.s).every(v=>!v);
+// ---- Drop schedule (Africa/Nairobi = UTC+3, no DST) ----
+function sched(){const k=new Date(Date.now()+10800000),dow=k.getUTCDay(),h=k.getUTCHours()+k.getUTCMinutes()/60;
+const at=(d,hr)=>Date.UTC(k.getUTCFullYear(),k.getUTCMonth(),k.getUTCDate()+d,hr)-10800000;
+let live=dow==CFG.dropDay&&h>=OH()&&h<CFG.closeHour,d=(CFG.dropDay-dow+7)%7;if(d==0&&h>=OH())d=7;
+if(SET.mode=='open')live=true;if(SET.mode=='closed')live=false;if(ovr)live=ovr=='live';const t=live?at(0,CFG.closeHour):at(d,OH());
+return{live,t,ended:!live&&dow==CFG.dropDay&&h>=CFG.closeHour}}
+function draw(){const s=sched();$('dtag').textContent=s.live?'Live now':'Next drop';$('dname').textContent=SET.name||CFG.collection.name;$('ddesc').textContent=SET.desc||CFG.collection.desc;
+$('grid').innerHTML=!P.length?'<p class="note">Pieces for the next drop will appear here.</p>':P.map(p=>`<div class="pc" onclick="openP('${p.id}')"><div class="ph" style="background:${bg(p)}">${p.img?'':p.name[0]}</div><div class="i"><div class="n">${p.name}</div><div class="p">${kes(p.price)}</div>${sold(p)?'<div class="so">Sold out</div>':''}</div></div>`).join('');
+$('cbody').innerHTML=SET.contact?esc(SET.contact).replace(/\n/g,'<br>'):'Contact details coming soon.';$('cnt').textContent=bag.reduce((a,b)=>a+b.q,0);tick()}
+function tick(){const s=sched(),r=Math.max(0,s.t-Date.now()),u=[['Days',864e5],['Hrs',36e5],['Min',6e4],['Sec',1e3]];let x=r;
+const cd=u.map(([l,m])=>{const v=Math.floor(x/m);x-=v*m;return `<div><b>${String(v).padStart(2,'0')}</b><span>${l}</span></div>`}).join('');
+const when=new Date(s.t).toLocaleString('en-KE',{timeZone:'Africa/Nairobi',weekday:'long',day:'numeric',month:'long',hour:'numeric',minute:'2-digit'});
+$('dbox').innerHTML=s.live?`<div class="tag">Drop is open</div><p style="margin:8px 0 0">Closes in</p><div class="cd">${cd}</div><p class="note">Preorder with a ${CFG.depositPct}% deposit · balance on delivery</p>`:
+`<div class="serif" style="font-size:26px">${s.ended?'This drop has closed. Next one soon.':'Coming soon'}</div><p style="margin:6px 0 0">Next drop: ${when} (Nairobi time)</p><div class="cd">${cd}</div><p class="note">Browse the preview below, then return on Wednesday.</p>`}
+setInterval(tick,1000);
+// ---- Product sheet ----
+let sel={};
+function openP(id){const p=P.find(x=>x.id==id);sel={p,s:null,c:p.c[0],q:1};renderP()}
+function renderP(){const{p}=sel,live=sched().live,st=sel.s?stock(p,sel.s):0,del=dd();
+$('sheet').innerHTML=`<div class="ph" style="background:${bg(p)};border-radius:16px;aspect-ratio:4/3">${p.img?'':p.name[0]}</div><h2 class="serif" style="margin-top:14px">${p.name}</h2><div style="color:var(--petal);font-size:18px">${kes(p.price)}</div>
+<label>Size</label><div class="chips">${Object.keys(p.s).map(k=>`<button class="chip ${sel.s==k?'sel':''}" ${p.s[k]?'':'disabled'} onclick="sel.s='${k}';sel.q=1;renderP()">${k}${p.s[k]?'':' · sold out'}</button>`).join('')}</div>
+<label>Colour</label><div class="chips">${p.c.map(c=>`<button class="chip ${sel.c==c?'sel':''}" onclick="sel.c='${c}';renderP()">${c}</button>`).join('')}</div>
+<p class="note">${sel.s?(st<=3?`Only ${st} left in ${sel.s}`:`In stock`):'Select a size to see availability'} · Estimated delivery: ${del} (10 days) · <button class="chip" style="padding:3px 10px" onclick="infoO('size',1)">Size guide</button></p>
+<div class="q" style="display:flex;gap:10px;align-items:center;margin:12px 0"><button onclick="sel.q=Math.max(1,sel.q-1);renderP()">−</button><b>${sel.q}</b><button onclick="sel.q=Math.min(${st||1},sel.q+1);renderP()">+</button></div>
+${live?'':'<div class="warn">The shop opens on drop day. You can preview this piece now.</div>'}
+<button class="btn" style="width:100%" ${live&&sel.s&&st?'':'disabled'} onclick="addBag()">Add to Bag</button><button class="btn line" style="width:100%;margin-top:8px" onclick="closeO()">Close</button>`;$('ov').classList.add('on')}
+function dd(){return new Date(Date.now()+864e6).toLocaleDateString('en-KE',{timeZone:'Africa/Nairobi',weekday:'short',day:'numeric',month:'short'})}
+function addBag(){const{p,s,c,q}=sel,k=p.id+s+c,e=bag.find(b=>b.k==k),have=e?e.q:0;
+if(have+q>stock(p,s)){alert('Not enough stock for that quantity.');return}
+e?e.q+=q:bag.push({k,id:p.id,s,c,q});save();draw();dropFx([p])}
+function closeO(){$('ov').classList.remove('on')}
+$('ov').onclick=e=>{if(e.target.id=='ov')closeO()};$('bagBtn').onclick=openBag;
+// ---- Bag ----
+const tot=()=>bag.reduce((a,b)=>a+P.find(p=>p.id==b.id).price*b.q,0);
+function openBag(){bag=bag.filter(b=>P.find(p=>p.id==b.id));let issues='';
+bag.forEach(b=>{const p=P.find(x=>x.id==b.id),av=stock(p,b.s);if(av<b.q){issues+=`<div class="warn">${p.name} (${b.s}) is ${av?'low on stock — only '+av+' left':'sold out'}. Please adjust or remove it.</div>`}});
+$('sheet').innerHTML=`<h2 class="serif">Your Bag</h2>${issues}${bag.length?bag.map((b,i)=>{const p=P.find(x=>x.id==b.id);return `<div class="line-i"><div class="th" style="background:${bg(p)}"></div><div style="flex:1"><div>${p.name}</div><div class="note">${b.s} · ${b.c} · ${kes(p.price)}</div></div><div class="q"><button onclick="qty(${i},-1)">−</button> ${b.q} <button onclick="qty(${i},1)">+</button></div></div>`}).join('')+sum(tot())+`<button class="btn" style="width:100%" ${issues?'disabled':''} onclick="openCO()">Checkout</button>`:'<p>Your bag is empty.</p>'}<button class="btn line" style="width:100%;margin-top:8px" onclick="closeO()">Continue browsing</button>`;$('ov').classList.add('on')}
+function qty(i,d){const b=bag[i];b.q+=d;if(b.q<1)bag.splice(i,1);save();draw();openBag()}
+function sum(t){const dep=Math.ceil(t*CFG.depositPct/100);return `<div class="sum"><div><span>Total preorder price</span><span>${kes(t)}</span></div><div class="hl"><span>Deposit now (${CFG.depositPct}%)</span><span>${kes(dep)}</span></div><div><span>Balance on delivery</span><span>${kes(t-dep)}</span></div><div><span>Estimated delivery</span><span>${dd()}</span></div><div class="note"><span>Delivery fee is confirmed by HOTTIE after you order.</span></div></div>`}
+// ---- Checkout ----
+const F=[['name','Full name','text'],['phone','M-Pesa phone number','tel'],['email','Email address','email'],['addr','Delivery address','text'],['town','Town or area','text'],['note','Delivery instructions (optional)','text']];
+function openCO(){if(!sched().live){alert('The shop is closed until the next drop.');return}
+$('sheet').innerHTML=`<h2 class="serif">Checkout</h2>${sum(tot())}${dlSel()}${F.map(([k,l,t])=>`<label>${l}</label><input id="f_${k}" type="${t}" autocomplete="off"><div class="err" id="e_${k}"></div>`).join('')}
+<div class="warn">M-Pesa payment needs a payment gateway (Safaricom Daraja) connected to a server. Until that is set up, your order is saved as <b>awaiting deposit</b> and is not marked paid.</div>
+<button class="btn" style="width:100%" onclick="place()">Place preorder</button><button class="btn line" style="width:100%;margin-top:8px" onclick="openBag()">Back to bag</button>`}
+async function place(){const v={};let ok=true;F.forEach(([k])=>{v[k]=$('f_'+k).value.trim();$('e_'+k).textContent=''});
+const er=(k,m)=>{$('e_'+k).textContent=m;ok=false};
+if(v.name.length<3)er('name','Please enter your full name');
+if(!/^(?:\+?254|0)[17]\d{8}$/.test(v.phone.replace(/\s/g,'')))er('phone','Enter a valid Kenyan number, e.g. 0712 345 678');
+if(!/^\S+@\S+\.\S+$/.test(v.email))er('email','Enter a valid email address');
+if(v.addr.length<4)er('addr','Please enter your delivery address');if(!v.town)er('town','Please enter your town or area');
+if(dlOpts().length&&$('f_dl').value==='')er('dl','Please choose a delivery option');
+if(!ok)return;let t=tot(),dep=Math.ceil(t*CFG.depositPct/100),no='';
+const items=bag.map(b=>{const p=P.find(x=>x.id==b.id);return{id:b.id,name:p.name,price:p.price,s:b.s,c:b.c,q:b.q}});
+const dl=dlOpts().length?dlOpts()[+$('f_dl').value]:null;const o={no,v,items,t,dep,del:dl,paid:0,status:'Awaiting deposit',eta:Date.now()+864e6,at:Date.now()};
+if(!READY){alert('This shop is not ready to take orders yet.');return}
+try{const{data,error}=await SB.rpc('place_order',{p_v:v,p_items:bag.map(b=>({id:b.id,s:b.s,c:b.c,q:b.q})),p_del:dl});if(error)throw error;no=data.no;t=data.t;dep=data.dep;o.no=no;o.t=t;o.dep=dep}catch(e){alert((e&&e.message)||'Sorry, we could not save your order. Please try again.');return}
+if(SET.sendNumber){payManual(o);return}
+if(SET.payUrl){payScr(o);return}
+thanksFx();
+$('sheet').innerHTML=`<div class="logo script" style="font-size:44px;text-align:center">Hottie</div><h2 class="serif" style="text-align:center">Preorder received</h2><p style="text-align:center">Order number <b>${no}</b></p>
+<div class="sum"><div><span>Payment status</span><span style="color:var(--fern)">Awaiting deposit</span></div><div><span>Total</span><span>${kes(t)}</span></div><div class="hl"><span>Deposit due</span><span>${kes(dep)}</span></div><div><span>Balance on delivery</span><span>${kes(t-dep)}</span></div><div><span>Estimated delivery</span><span>${dd()}</span></div>${dl?`<div><span>${esc(dl.name)}</span><span>${dl.fee?kes(dl.fee)+' on delivery':'free'}</span></div>`:''}</div>
+<p class="note">Your order is not confirmed until the ${CFG.depositPct}% deposit is received. HOTTIE will contact you on ${v.phone} to complete the M-Pesa payment.</p><button class="btn" style="width:100%" onclick="bag=[];save();draw();closeO()">Done</button>`}
+// ---- Order tracking ----
+const STEPS=['Deposit received','Preorder confirmed','Being prepared','In transit','Out for delivery','Arrived','Delivered'];
+function trackO(msg){$('sheet').innerHTML=`<h2 class="serif">Track your preorder</h2><label>Order number</label><input id="t_no" placeholder="HOT-XXXXXX"><label>Phone number used at checkout</label><input id="t_ph" type="tel"><div class="err">${msg||''}</div><button class="btn" style="width:100%;margin-top:10px" onclick="look()">Track</button><button class="btn line" style="width:100%;margin-top:8px" onclick="closeO()">Close</button>`;$('ov').classList.add('on')}
+async function look(){const no=$('t_no').value.trim().toUpperCase(),ph=$('t_ph').value.replace(/\D/g,'').slice(-9);
+if(!READY)return trackO('The shop is not ready yet.');
+let o;try{const{data,error}=await SB.rpc('track_order',{p_no:no,p_phone:ph});if(error)throw error;o=data?{...data,eta:data.eta?new Date(data.eta).getTime():null,at:new Date(data.created_at).getTime()}:null}catch(e){return trackO('Could not reach the store. Try again.')}
+if(!o)return trackO('We could not find an order with those details.');
+TRK={no,ph};
+const idx=STEPS.indexOf(o.status),bal=o.t-(o.paid||0),eta=new Date(o.eta||o.at+864e6).toLocaleDateString('en-KE',{timeZone:'Africa/Nairobi',weekday:'short',day:'numeric',month:'short'});
+$('sheet').innerHTML=`<h2 class="serif">${o.no}</h2>${o.status=='Arrived'?`<div class="warn"><b>Your package has arrived.</b> Balance of ${kes(bal)} is payable on delivery.</div>`:''}${o.status=='Cancelled'?'<div class="warn">This order was cancelled.</div>':''}
+<div style="margin:12px 0">${STEPS.map((x,i)=>`<div style="display:flex;gap:10px;align-items:center;padding:6px 0;opacity:${i<=idx?1:.4}"><span style="width:12px;height:12px;border-radius:50%;background:${i<=idx?'var(--petal)':'#333'}"></span>${x}</div>`).join('')}${o.status=='Awaiting deposit'&&SET.sendNumber?trackPay(o):''}${o.status=='Payment submitted'?'<p class="note">Payment code received. HOTTIE is verifying it.</p>':''}${idx<0&&o.status=='Awaiting deposit'&&!SET.sendNumber?'<p class="note">Waiting for your 30% deposit to be received.</p>':''}</div>
+<div class="sum">${o.items.map(i=>`<div><span>${esc(i.name)} · ${i.s} · ${esc(i.c)}</span><span>×${i.q}</span></div>`).join('')}<div><span>Total</span><span>${kes(o.t)}</span></div><div><span>Deposit paid</span><span>${kes(o.paid||0)}</span></div><div class="hl"><span>Balance due on delivery</span><span>${kes(bal)}</span></div>${o.del?`<div><span>${esc(o.del.name)}</span><span>${o.del.fee?kes(o.del.fee)+' on delivery':'free'}</span></div>`:''}<div><span>Estimated delivery</span><span>${eta}</span></div></div><button class="btn line" style="width:100%" onclick="closeO()">Close</button>`}
+// ---- Outfit builder (visual preview, not a fit simulation) ----
+let LK={},LKC=null;
+const lc=c=>(c||'').toLowerCase(),zi=c=>({shoes:0,pants:1,trousers:1,skirts:1,skirt:1,dresses:2,dress:2,tops:3,top:3,jackets:4,jacket:4,accessories:5,accessory:5})[lc(c)]??3;
+const BOT=['pants','trousers','skirts','skirt'],TOP=['tops','top'],DRS=['dresses','dress'];
+async function upModel(){const fl=$('s_model').files[0];if(!fl)return;try{const A=await claude.use('assets');if(!A){alert('Only editors can upload.');return}await setS({model:(await A.upload(fl)).url})}catch(e){alert('Upload failed.')}}
+function lookO(){LK={};LKC=null;drawL()}
+function firstS(p){return Object.keys(p.s).find(k=>p.s[k]>0)||null}
+function pick(id){const p=P.find(x=>x.id==id);if(!p||sold(p))return;const c=p.cat;
+if(LK[c]&&LK[c].id==id){delete LK[c];return drawL()}
+Object.keys(LK).forEach(k=>{if(DRS.includes(lc(c))&&(TOP.includes(lc(k))||BOT.includes(lc(k))))delete LK[k];if((TOP.includes(lc(c))||BOT.includes(lc(c)))&&DRS.includes(lc(k)))delete LK[k]});
+LK[c]={id,c:p.c[0],s:firstS(p)};drawL()}
+function lset(c,k,v){LK[c][k]=v;drawL()}
+function lbad(c){const it=LK[c],p=P.find(x=>x.id==it.id);return !p||!it.s||stock(p,it.s)<1}
+function addItem(c){const it=LK[c],p=P.find(x=>x.id==it.id);if(!p||!it.s||stock(p,it.s)<1)return p?p.name+' ('+(it.s||'no size')+') is unavailable':'A piece is no longer available';
+const k=p.id+it.s+it.c,e=bag.find(b=>b.k==k);if((e?e.q:0)+1>stock(p,it.s))return 'Not enough stock for '+p.name;e?e.q++:bag.push({k,id:p.id,s:it.s,c:it.c,q:1});save();return ''}
+function addOneL(c){const m=addItem(c);if(m){alert(m);return drawL()}draw();dropFx([P.find(x=>x.id==LK[c].id)])}
+function addAllL(){const cs=Object.keys(LK);const bad=cs.filter(lbad);if(bad.length){alert('Please replace or remove: '+bad.map(c=>(P.find(x=>x.id==LK[c].id)||{name:c}).name).join(', '));return drawL()}
+for(const c of cs){const m=addItem(c);if(m){alert(m);draw();return drawL()}}draw();dropFx(cs.map(c=>P.find(x=>x.id==LK[c].id)))}
+function drawL(){const live=sched().live,pcs=P.filter(p=>p.look!==false&&!sold(p)),cats=[...new Set(pcs.map(p=>p.cat))];if(!cats.includes(LKC))LKC=cats[0]||null;
+const ls=Object.keys(LK).map(c=>({c,p:P.find(x=>x.id==LK[c].id),it:LK[c]})).sort((a,b)=>zi(a.c)-zi(b.c)),total=ls.reduce((a,x)=>a+(x.p?x.p.price:0),0),bad=ls.some(x=>lbad(x.c));
+const model=SET.model?`<img src="${SET.model}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain">`:'<svg viewBox="0 0 100 200" style="position:absolute;inset:0;width:100%;height:100%"><circle cx="50" cy="24" r="11" fill="#2a2a2e"/><path d="M36 40h28l8 72h-9l-3 82h-8l-2-68-2 68h-8l-3-82h-9z" fill="#2a2a2e"/></svg>';
+const lay=ls.filter(x=>x.p&&x.p.layer).map(x=>`<img src="${x.p.layer}" alt="${esc(x.p.name)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain">`).join('');
+const nol=ls.filter(x=>x.p&&!x.p.layer).map(x=>`<span class="chip sel" style="font-size:11px;padding:4px 10px">${esc(x.p.name)}</span>`).join(' ');
+$('sheet').innerHTML=`<h2 class="serif">Create Your Look</h2><div style="position:relative;height:44vh;border-radius:18px;overflow:hidden;background:#141417">${model}${lay}<div style="position:absolute;left:8px;bottom:8px;right:8px;display:flex;gap:4px;flex-wrap:wrap">${nol}</div></div>
+<p class="note" style="margin:6px 0">Visual preview only — this is not a fit simulation. Check the size guide for sizing.${SET.model?'':' Upload a model photo and layer images in Admin for a realistic preview.'}</p>
+<div class="sum">${ls.map(x=>`<div><span>${esc(x.p?x.p.name:'Unavailable')}</span><span>${x.p?kes(x.p.price):''}</span></div>`).join('')||'<div class="note"><span>Pick pieces below to start your look.</span></div>'}<div class="hl"><span>Look total</span><span>${kes(total)}</span></div></div>
+<button class="btn" style="width:100%" ${ls.length&&live&&!bad?'':'disabled'} onclick="addAllL()">Add Complete Look to Bag</button>${live?'':'<p class="note">The shop opens on drop day — you can still build looks now.</p>'}<button class="btn line" style="width:100%;margin-top:8px" onclick="LK={};drawL()">Clear look</button>
+${ls.map(x=>x.p?`<div class="sum"><div><b>${esc(x.p.name)}</b><button class="chip" onclick="delete LK['${x.c}'];drawL()">Remove</button></div>${lbad(x.c)?'<div class="warn">That size is unavailable. Pick another size or remove it.</div>':''}<div class="chips">${Object.keys(x.p.s).map(k=>`<button class="chip ${x.it.s==k?'sel':''}" ${x.p.s[k]?'':'disabled'} onclick="lset('${x.c}','s','${k}')">${k}</button>`).join('')}</div><div class="chips">${x.p.c.map(c=>`<button class="chip ${x.it.c==c?'sel':''}" onclick="lset('${x.c}','c','${c}')">${esc(c)}</button>`).join('')}</div><button class="chip" ${live&&!lbad(x.c)?'':'disabled'} onclick="addOneL('${x.c}')">Add this piece only</button></div>`:'<div class="warn">A selected piece is no longer available.<button class="chip" onclick="delete LK[\''+x.c+'\'];drawL()">Remove</button></div>').join('')}
+<div class="chips" style="margin-top:14px">${cats.map(c=>`<button class="chip ${c==LKC?'sel':''}" onclick="LKC='${esc(c)}';drawL()">${esc(c)}</button>`).join('')}</div>
+<div class="grid" style="grid-template-columns:repeat(2,1fr)">${pcs.filter(p=>p.cat==LKC).map(p=>`<div class="pc" style="${LK[p.cat]&&LK[p.cat].id==p.id?'border-color:var(--petal)':''}" onclick="pick('${p.id}')"><div class="ph" style="background:${bg(p)}">${p.img?'':p.name[0]}</div><div class="i"><div class="n">${esc(p.name)}</div><div class="p">${kes(p.price)}</div>${LK[p.cat]&&LK[p.cat].id==p.id?'<div class="so">In your look</div>':''}</div></div>`).join('')||'<p class="note">No pieces available yet.</p>'}</div>
+<button class="btn line" style="width:100%;margin-top:14px" onclick="closeO()">Close</button>`;$('ov').classList.add('on')}
+// ---- Delivery & info pages ----
+const dlOpts=()=>(SET.delivery||[]).filter(x=>x.on!==false);
+function dlSel(){const o=dlOpts();return o.length?`<label>Delivery option</label><select id="f_dl" onchange="dlInfo()"><option value="">Choose…</option>${o.map((d,i)=>`<option value="${i}">${esc(d.name)}${d.fee?' — '+kes(d.fee):' — free'}</option>`).join('')}</select><div class="note" id="dlinfo"></div><div class="err" id="e_dl"></div>`:'<p class="note">Delivery options and fees will be confirmed by HOTTIE after you order.</p>'}
+function dlInfo(){const v=$('f_dl').value,d=v===''?null:dlOpts()[+v];$('dlinfo').textContent=d?`Delivery fee ${d.fee?kes(d.fee):'free'}, paid on delivery with your balance.${d.eta?' Estimated: '+d.eta:''}`:''}
+const dlf=(d,i)=>`<div class="sum"><label>Name</label><input id="dn_${i}" value="${esc(d.name||'')}" placeholder="e.g. Nairobi delivery"><label>Fee (KSh)</label><input id="df_${i}" type="number" value="${d.fee??''}"><label>Estimated delivery time</label><input id="de_${i}" value="${esc(d.eta||'')}"><label style="text-transform:none;letter-spacing:0"><input type="checkbox" id="do_${i}" style="width:auto" ${d.on===false?'':'checked'}> Available</label><div style="margin-top:12px;display:flex;gap:8px"><button class="btn" onclick="saveDel('${i}')">${i=='new'?'Add option':'Save'}</button>${i=='new'?'':`<button class="btn line" onclick="delDel(${i})">Delete</button>`}</div></div>`;
+async function saveDel(i){const d={name:$('dn_'+i).value.trim(),fee:+$('df_'+i).value,eta:$('de_'+i).value.trim(),on:$('do_'+i).checked};if(!d.name||$('df_'+i).value===''||d.fee<0){alert('Enter a name and a fee (0 is fine).');return}const l=[...(SET.delivery||[])];i=='new'?l.push(d):l[+i]=d;await setS({delivery:l},'delivery')}
+async function delDel(i){if(!confirm('Delete this option?'))return;const l=[...(SET.delivery||[])];l.splice(i,1);await setS({delivery:l},'delivery')}
+const para=x=>esc(x).replace(/\n/g,'<br>');
+function infoO(k,back){const ship='HOTTIE sells by weekly preorder drops. You pay a 30% deposit when you order and the balance on delivery. Estimated delivery is 10 days from your confirmed order and may be updated. Follow your order with Track. Delivery options and fees are shown at checkout.';
+$('sheet').innerHTML=k=='size'?`<h2 class="serif">Size guide</h2><p>${para(SET.sizeText||'Size guide coming soon.')}</p>`:`<h2 class="serif">Shipping</h2><p>${para(SET.shipText||ship)}</p><h2 class="serif" style="margin-top:18px">Returns</h2><p>${para(SET.returnsText||'Our returns policy will be published here.')}</p>`;
+$('sheet').innerHTML+=`<button class="btn line" style="width:100%;margin-top:14px" onclick="${back?'renderP()':'closeO()'}">${back?'Back':'Close'}</button>`;$('ov').classList.add('on')}
+// ---- M-Pesa Paybill (STK Push) ----
+const msisdn=x=>{const d=String(x||'').replace(/\D/g,'');return /^0[17]\d{8}$/.test(d)?'254'+d.slice(1):/^[17]\d{8}$/.test(d)?'254'+d:/^254[17]\d{8}$/.test(d)?d:null};
+let PAYT=null;
+function payScr(o,msg,state){clearInterval(PAYT);state=state||'ready';
+const body=state=='wait'?`<div style="text-align:center;margin:18px 0"><div class="serif" style="font-size:24px">Check your phone</div><p>Enter your M-Pesa PIN to pay <b>${kes(o.dep)}</b>.</p><p class="note">Waiting for confirmation from M-Pesa…</p></div>`:state=='paid'?`<div style="text-align:center;margin:18px 0"><div class="serif" style="font-size:26px;color:var(--petal)">Deposit received</div><p>Thank you! M-Pesa receipt <b>${esc(msg||'')}</b>.</p><p class="note">Balance of ${kes(o.t-o.dep)} is payable on delivery. Order ${o.no}.</p></div>`:
+`<p style="text-align:center">Order <b>${o.no}</b> · Deposit <b>${kes(o.dep)}</b></p><label>M-Pesa phone number</label><input id="pp" type="tel" value="${esc(o.v.phone)}"><div class="err">${msg||''}</div><button class="btn" style="width:100%;margin-top:10px" onclick="payGo('${o.no}',${o.dep})">Pay ${kes(o.dep)} with M-Pesa</button><p class="note">You will get a prompt on your phone. Enter your PIN to confirm.</p>`;
+$('sheet').innerHTML=`<div class="logo script" style="font-size:44px;text-align:center">Hottie</div><h2 class="serif" style="text-align:center">Pay your deposit</h2>${body}<button class="btn line" style="width:100%;margin-top:8px" onclick="bag=[];save();draw();closeO()">${state=='paid'?'Done':'Pay later'}</button>`;PAYO=o;if(state=='paid')thanksFx()}
+let PAYO=null;
+async function payGo(no,dep){const ph=msisdn($('pp').value);if(!ph)return payScr(PAYO,'Enter a valid Safaricom number, e.g. 0712 345 678.');
+payScr(PAYO,'','wait');
+try{const r=await fetch(SET.payUrl+'/stk-push',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order:no,phone:ph})});const d=await r.json();if(!d.ok)return payScr(PAYO,d.error||'Could not send the prompt.');}
+catch(e){return payScr(PAYO,'Could not reach the payment service. Please try again.')}
+let n=0;const o=PAYO;PAYT=setInterval(async()=>{n++;try{const d=await(await fetch(SET.payUrl+'/status?order='+encodeURIComponent(no))).json();if(d.paid){clearInterval(PAYT);payScr(o,d.receipt,'paid');return}}catch(e){}
+if(n>30){clearInterval(PAYT);payScr(o,'We have not received the payment yet. If you were charged, contact HOTTIE with your order number.')}},4000)}
+// ---- Bag drop & thank-you animations ----
+const calm=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const BAGSVG=d=>`<svg viewBox="0 0 190 230" style="animation-delay:${d}s"><path d="M65 64C65 8 125 8 125 64" stroke="#DBAEBB" stroke-width="8" fill="none" stroke-linecap="round"/><rect x="15" y="58" width="160" height="165" rx="14" fill="#DBAEBB"/><text x="95" y="150" text-anchor="middle" font-family="Pinyon Script,cursive" font-size="54" fill="#09090B">Hottie</text></svg>`;
+function dropFx(ps){ps=ps.filter(Boolean).slice(0,4);if(!ps.length||calm()){openBag();return}closeO();
+const el=document.createElement('div');el.id='fx';const end=(ps.length-1)*.35+.8;
+el.innerHTML=`<div class="bagfx pic">${ps.map((p,i)=>`<div class="dropi" style="background:${bg(p)};animation-delay:${i*.35}s"></div>`).join('')}<img src="bag.png" alt="" style="animation-delay:${end}s"></div><div class="serif" style="font-size:26px;margin-top:20px;color:var(--petal)">Added to your bag</div>`;
+document.body.appendChild(el);setTimeout(()=>{el.remove();openBag()},(end+.7)*1000)}
+const KISSSVG='<svg class="kiss" viewBox="0 0 120 80"><path d="M10 40C25 18 45 14 60 28C75 14 95 18 110 40C95 66 75 72 60 70C45 72 25 66 10 40Z" fill="#DBAEBB"/><path d="M14 40C40 48 80 48 106 40" stroke="#09090B" stroke-width="3" fill="none"/></svg>';
+function thanksFx(){if(calm())return;const el=document.createElement('div');el.id='tx';
+el.innerHTML='<div class="script tk">Thank you!</div><div class="tks">Your preorder is in. We can’t wait for you to see your new outfit.</div><img class="kiss" src="kiss.png" alt="" onerror="this.outerHTML=KISSSVG"><div class="serif mw">mwah</div>';
+el.onclick=()=>el.remove();document.body.appendChild(el);setTimeout(()=>{el.style.animation='fo .6s ease forwards';setTimeout(()=>el.remove(),650)},4300)}
+async function upBag(){const fl=$('s_bag').files[0];if(!fl){alert('Please choose a photo first, then tap Upload bag image.');return}try{const A=await claude.use('assets');if(!A){alert('Only the owner can upload. Please log in via Owner login.');return}await setS({bagImg:(await A.upload(fl)).url});alert('Bag image saved.')}catch(e){alert('Upload failed: '+((e&&e.message)||'please try a smaller photo.'))}}
+// ---- Send Money + confirmation code ----
+let TRK=null;
+const payHow=o=>`<div class="warn"><b>1.</b> Open M-Pesa and choose <b>Send Money</b>.<br><b>2.</b> Send exactly <b>${kes(o.dep)}</b> to <b>${esc(SET.sendNumber)}</b>${SET.sendName?' ('+esc(SET.sendName)+')':''}.<br><b>3.</b> Copy the confirmation code from the M-Pesa message (10 letters and numbers) and enter it below.</div><label>M-Pesa confirmation code</label><input id="pc" maxlength="10" autocapitalize="characters" autocomplete="off" placeholder="e.g. ABC1D2EFGH"><div class="err" id="pe"></div>`;
+function payManual(o){$('sheet').innerHTML=`<div class="logo script" style="font-size:44px;text-align:center">Hottie</div><h2 class="serif" style="text-align:center">Pay your deposit</h2><p style="text-align:center">Order <b>${o.no}</b></p><div class="sum"><div class="hl"><span>Deposit to send now</span><span>${kes(o.dep)}</span></div><div><span>Balance on delivery</span><span>${kes(o.t-o.dep)}</span></div></div>${payHow(o)}
+<button class="btn" style="width:100%;margin-top:10px" onclick="payCode('${o.no}','${esc(o.v.phone)}',0)">Submit confirmation code</button><button class="btn line" style="width:100%;margin-top:8px" onclick="bag=[];save();draw();closeO()">I’ll pay later</button><p class="note">Your order is confirmed once HOTTIE verifies your payment. If you pay later, use Track with your order number to add your code.</p>`}
+function trackPay(o){return `<div class="sum"><div class="hl"><span>Deposit due</span><span>${kes(o.dep)}</span></div></div>${payHow(o)}<button class="btn" style="width:100%;margin:10px 0" onclick="payCode('${o.no}','${TRK?TRK.ph:''}',1)">Submit confirmation code</button>`}
+async function payCode(no,phone,fromTrack){const code=($('pc').value||'').trim().toUpperCase();
+if(!/^[A-Z0-9]{10}$/.test(code)){$('pe').textContent='Enter the 10-character code from your M-Pesa message.';return}
+let err=null;try{const{error}=await SB.rpc('submit_payment_code',{p_no:no,p_phone:phone,p_code:code});if(error)err=error.message||'Could not submit the code.'}catch(e){err='Could not reach the store. Please try again.'}
+if(err){$('pe').textContent=err;return}
+if(!fromTrack){bag=[];save();draw();thanksFx()}
+$('sheet').innerHTML=`<h2 class="serif" style="text-align:center">Code received</h2><p style="text-align:center">Thank you! HOTTIE will verify your payment and confirm your order. Follow it any time with <b>Track</b> using order number <b>${no}</b>.</p><button class="btn" style="width:100%" onclick="closeO()">Done</button>`}
+// ---- Admin ----
+const STAT=['Awaiting deposit','Payment submitted','Deposit received','Preorder confirmed','Being prepared','In transit','Out for delivery','Arrived','Delivered','Cancelled'];
+const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sStr=p=>Object.entries(p.s||{}).map(([k,v])=>k+':'+v).join(', ');
+const pS=x=>{const o={};x.split(',').forEach(y=>{const[k,v]=y.split(':');if(k&&k.trim())o[k.trim().toUpperCase()]=Math.max(0,parseInt(v)||0)});return o};
+async function setS(p,tab){SET={...SET,...p};await DB.doc('settings/store').set(SET);admin(tab||'store')}
+function pf(p,id){return `<div class="sum"><label>Name</label><input id="n_${id}" value="${esc(p.name||'')}"><label>Price (KSh)</label><input id="pr_${id}" type="number" value="${p.price||''}"><label>Category</label><input id="ct_${id}" value="${esc(p.cat||'Tops')}"><label>Colours (comma separated)</label><input id="cl_${id}" value="${esc((p.c||[]).join(', '))}"><label>Photo</label>${p.img?`<div class="ph" style="width:80px;aspect-ratio:3/4;border-radius:10px;background:${bg(p)}"></div>`:''}<input id="im_${id}" type="file" accept="image/*"><label>Outfit builder</label><label style="text-transform:none;letter-spacing:0"><input type="checkbox" id="lk_${id}" ${p.look===false?'':'checked'} style="width:auto"> Show in Create Your Look</label><label>Outfit layer image (transparent PNG, same canvas as the model)</label><input id="ly_${id}" type="file" accept="image/png,image/webp"><label>Sizes and stock</label><input id="sz_${id}" placeholder="XS:3, S:5, M:4" value="${esc(sStr(p))}"><div style="margin-top:12px;display:flex;gap:8px"><button class="btn" onclick="saveP('${id}')">${id=='new'?'Add product':'Save'}</button>${id=='new'?'':`<button class="btn line" onclick="delP('${id}')">Delete</button>`}</div></div>`}
+async function saveP(id){const d={name:$('n_'+id).value.trim(),price:+$('pr_'+id).value,cat:$('ct_'+id).value.trim(),c:$('cl_'+id).value.split(',').map(x=>x.trim()).filter(Boolean),s:pS($('sz_'+id).value),look:$('lk_'+id).checked};
+try{const fl=$('im_'+id).files[0];if(fl){const A=await claude.use('assets');if(!A){alert('Photo upload is only available to editors.');return}d.img=(await A.upload(fl)).url}const fy=$('ly_'+id).files[0];if(fy){const A=await claude.use('assets');if(A)d.layer=(await A.upload(fy)).url}}catch(e){alert('Photo upload failed. Please try a smaller image.');return}
+if(!d.name||!(d.price>0)||!Object.keys(d.s).length||!d.c.length){alert('Please fill in name, price, colours and sizes.');return}
+if(id=='new'){d.hue='#DBAEBB';await DB.collection('products').add(d)}else await DB.doc('products/'+id).update(d);admin('products')}
+async function delP(id){if(confirm('Delete this product?')){await DB.doc('products/'+id).delete();admin('products')}}
+const STEPMAP={'Deposit received':1,'Preorder confirmed':1,'In transit':2,'Out for delivery':3,'Arrived':4};
+const stepOf=x=>({'In transit':2,'Out for delivery':3,'Arrived':4,'Delivered':4})[x]||1;
+async function mailO(no,step){try{const{data,error}=await SB.functions.invoke('send-order-email',{body:{no,step}});if(error||(data&&data.error))throw new Error((data&&data.error)||error.message);alert('Email sent to the customer.')}catch(e){alert('Email not sent: '+(e.message||e))}}
+async function setO(uid,no,patch){const want=patch.status;try{if(patch.status=='Deposit received'){const{error}=await SB.rpc('confirm_deposit',{p_no:no});if(error)throw error;delete patch.status;delete patch.paid}
+const u={};if(patch.status)u.status=patch.status;if('paid' in patch)u.paid=patch.paid;if('pay_code' in patch)u.pay_code=patch.pay_code;if(patch.eta)u.eta=new Date(patch.eta).toISOString();
+if(Object.keys(u).length){const{error}=await SB.from('orders').update(u).eq('no',no);if(error)throw error}}catch(e){alert('Could not update the order: '+(e.message||e));return}
+await reloadAll();admin('orders');if(STEPMAP[want]&&confirm('Email the customer about this update?'))await mailO(no,STEPMAP[want])}
+function admin(tab){tab=tab||'store';if(!DB)return;
+let h=`<h2 class="serif">Admin</h2><div class="chips">${['store','delivery','pages','products','orders'].map(t=>`<button class="chip ${t==tab?'sel':''}" onclick="admin('${t}')">${t}</button>`).join('')}</div>`;
+if(tab=='store')h+=`<label>Store mode</label><div class="chips">${[['auto','Follow schedule'],['open','Force open'],['closed','Force closed']].map(([k,l])=>`<button class="chip ${SET.mode==k?'sel':''}" onclick="setS({mode:'${k}'})">${l}</button>`).join('')}</div><label>Collection name</label><input id="s_name" value="${esc(SET.name||'')}"><label>Description</label><input id="s_desc" value="${esc(SET.desc||'')}"><label>Outfit builder model photo</label><input id="s_model" type="file" accept="image/*"><button class="chip" style="margin-top:8px" onclick="upModel()">Upload model</button><label>M-Pesa payment server address (leave empty until connected)</label><input id="s_pay" placeholder="https://api.yourdomain.co.ke" value="${esc(SET.payUrl||'')}"><button class="chip" style="margin-top:8px" onclick="setS({payUrl:$('s_pay').value.trim().replace(/\/$/,'')})">Save payment address</button><label>Shopping bag image (used in the add-to-bag animation)</label>${SET.bagImg?`<img src="${esc(SET.bagImg)}" alt="" style="width:110px;border-radius:12px;display:block;margin:6px 0"><div class="note">Current bag image saved.</div>`:'<div class="note">No bag image uploaded yet.</div>'}<input id="s_bag" type="file" accept="image/*"><button class="chip" style="margin-top:8px" onclick="upBag()">Upload bag image</button><label>M-Pesa number customers send deposits to</label><input id="s_sn" type="tel" value="${esc(SET.sendNumber||'')}" placeholder="0712 345 678"><label>Name registered on that M-Pesa number</label><input id="s_sname" value="${esc(SET.sendName||'')}"><label>Drop opens at hour (Nairobi, 0–23)</label><input id="s_open" type="number" value="${OH()}"><button class="btn" style="margin-top:12px" onclick="setS({name:$('s_name').value,desc:$('s_desc').value,openHour:+$('s_open').value,sendNumber:$('s_sn').value.trim(),sendName:$('s_sname').value.trim()})">Save</button>`;
+if(tab=='delivery')h+=(SET.delivery||[]).map((d,i)=>dlf(d,i)).join('')+'<div class="tag" style="margin-top:14px">New delivery option</div>'+dlf({},'new')+'<p class="note">Add pickup as an option with a fee of 0. HOTTIE sets all fees — none are preset.</p>';
+if(tab=='pages')h+=`<label>Shipping information</label><textarea id="g_ship" rows="4">${esc(SET.shipText||'')}</textarea><label>Returns policy</label><textarea id="g_ret" rows="4">${esc(SET.returnsText||'')}</textarea><label>Size guide</label><textarea id="g_size" rows="4">${esc(SET.sizeText||'')}</textarea><label>Contact details (WhatsApp, email, Instagram)</label><textarea id="g_con" rows="3">${esc(SET.contact||'')}</textarea><button class="btn" style="margin-top:12px" onclick="setS({shipText:$('g_ship').value,returnsText:$('g_ret').value,sizeText:$('g_size').value,contact:$('g_con').value},'pages')">Save</button>`;
+if(tab=='products')h+=P.map(p=>`<div class="tag" style="margin-top:14px">${esc(p.name)}</div>`+pf(p,p.id)).join('')+'<div class="tag" style="margin-top:14px">New product</div>'+pf({},'new');
+if(tab=='orders'){const open=ORD.filter(o=>o.status!='Delivered'&&o.status!='Cancelled'),out=open.reduce((a,o)=>a+(o.t-(o.paid||0)),0);
+h+=`<div class="sum"><div><span>Orders</span><span>${ORD.length}</span></div><div><span>Deposits received</span><span>${kes(ORD.reduce((a,o)=>a+(o.paid||0),0))}</span></div><div class="hl"><span>Outstanding balances</span><span>${kes(out)}</span></div></div>`;
+h+=ORD.sort((a,b)=>b.at-a.at).map(o=>`<div class="sum"><div><b>${o.no}</b><span>${o.status}</span></div><div class="note"><span>${esc(o.v.name)} · ${esc(o.v.phone)}</span></div><div class="note"><span>${esc(o.v.addr)}, ${esc(o.v.town)}</span></div>${o.del?`<div class="note"><span>${esc(o.del.name)} · fee ${kes(o.del.fee)} on delivery</span></div>`:''}${o.code?`<div class="note"><span>M-Pesa code: <b>${esc(o.code)}</b></span></div><div class="chips"><button class="chip" onclick="setO('${o.uid}','${o.no}',{status:'Awaiting deposit',pay_code:null})">Reject code</button></div>`:''}${o.items.map(i=>`<div class="note"><span>${esc(i.name)} · ${i.s} · ${esc(i.c)}</span><span>×${i.q}</span></div>`).join('')}<div><span>Total</span><span>${kes(o.t)}</span></div><div><span>Deposit paid</span><span>${kes(o.paid||0)}</span></div><div class="hl"><span>Balance</span><span>${kes(o.t-(o.paid||0))}</span></div><div><span>Est. delivery</span><input type="date" style="width:auto;margin:0" value="${new Date((o.eta||o.at+864e6)+10800000).toISOString().slice(0,10)}" onchange="setO('${o.uid}','${o.no}',{eta:new Date(this.value+'T12:00:00+03:00').getTime()})"></div><div class="chips" style="margin-top:10px"><button class="chip" onclick="setO('${o.uid}','${o.no}',{paid:${o.t}})">Record balance paid</button><button class="chip" onclick="mailO('${o.no}',stepOf('${o.status}'))">Email customer</button></div><div class="chips" style="margin-top:10px">${STAT.map(x=>`<button class="chip ${o.status==x?'sel':''}" onclick="setO('${o.uid}','${o.no}',{status:'${x}'})">${x}</button>`).join('')}</div></div>`).join('')||'<p class="note">No orders yet.</p>'}
+h+='<button class="btn line" style="width:100%;margin-top:12px" onclick="closeO()">Close</button>';$('sheet').innerHTML=h;$('ov').classList.add('on')}
+(async()=>{try{if(!READY){document.body.insertAdjacentHTML('afterbegin','<div class="warn" style="margin:0">Owner: add your Supabase details at the top of the file.</div>');return}
+const{data:{session}}=await SB.auth.getSession();SESS=session;if(session){const{data}=await SB.rpc('is_admin');ISADM=!!data}
+DB=await claude.use('db');isAdmin=ISADM;
+DB.collection('products').onSnapshot(x=>{P=x.docs.map(d=>({...d.data(),id:d.id}));draw()});
+DB.doc('settings/store').onSnapshot(x=>{SET=x.exists?x.data():{mode:'auto'};draw()});
+if(isAdmin){$('adm').style.display='block';RELOAD.push(loadOrd);loadOrd();setInterval(loadOrd,30000)}}catch(e){console.error(e)}})();
+draw();
+</script></body></html>
