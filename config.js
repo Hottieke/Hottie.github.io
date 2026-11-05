@@ -1,4 +1,4 @@
 window.HOTTIE = {
   url: 'https://kiexdydsuqgyhiqtnjlj.supabase.co',
-  key: 'PASTE_PUBLISHABLE_KEY'
+  key: 'sb_publishable_D_AdVR3hf_V0l8-nmKQXtA_o0h6n3Jh'
 };
